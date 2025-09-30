@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import hpp from 'hpp';
 import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -15,12 +16,12 @@ class App {
   }
 
   private configureMiddlewares(): void {
+    this.app.use(cors());
+    this.app.use(hpp());
+    this.app.use(helmet());
+
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
-    
-    this.app.use(helmet());
-    
-    this.app.use(cors());
   }
 
   private configureRoutes(): void {
