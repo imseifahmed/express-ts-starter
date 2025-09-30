@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import userRoutes from './user.routes';
+import userRoutes from '@/routes/user.routes';
 
 class Routes {
   public router: Router;

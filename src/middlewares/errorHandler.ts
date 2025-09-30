@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { createLogger } from '../utils/logger';
+import { createLogger } from '@/utils/logger';
 import { HttpException } from '@/exceptions/HttpException';
 
 const logger = createLogger('ErrorHandler');

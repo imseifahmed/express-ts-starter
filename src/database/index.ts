@@ -1,4 +1,4 @@
-import database from '../config/database';
+import database from '@/config/database';
 
 class DatabaseInit {
   public async initialize(): Promise<void> {

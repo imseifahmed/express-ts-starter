@@ -4,8 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import compression from 'compression';
-import routes from './routes';
-import { errorHandler } from './middlewares/errorHandler';
+import routes from '@/routes';
+import { errorHandler } from '@/middlewares/errorHandler';
 
 class App {
   public app: Application;

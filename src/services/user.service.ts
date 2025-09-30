@@ -1,6 +1,6 @@
-import User, { UserCreationAttributes } from '../models/user.model';
+import User, { UserCreationAttributes } from '@/models/user.model';
 import { Service } from 'typedi';
-import { createLogger } from '../utils/logger';
+import { createLogger } from '@/utils/logger';
 
 @Service()
 export class UserService {
