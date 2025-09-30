@@ -5,7 +5,7 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import compression from 'compression';
 import routes from '@/routes';
-import { errorHandler } from '@/middlewares/errorHandler';
+import { ErrorMiddleware } from '@/middlewares/error.middleware';
 
 class App {
   public app: Application;
@@ -32,7 +32,7 @@ class App {
   }
 
   private configureErrorHandling(): void {
-    this.app.use(errorHandler);
+    this.app.use(ErrorMiddleware);
   }
 }
 
