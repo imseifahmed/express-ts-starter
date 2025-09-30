@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UserService } from '../services/user.service';
 import asyncHandler from '../utils/asyncHandler';
-import { HttpException } from '../middlewares/errorHandler';
+import { HttpException } from '@/exceptions/HttpException';
 
 export class UserController {
   private userService: UserService;

@@ -1,18 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { createLogger } from '../utils/logger';
+import { HttpException } from '@/exceptions/HttpException';
 
 const logger = createLogger('ErrorHandler');
-
-export class HttpException extends Error {
-  public status: number;
-  public message: string;
-
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-    this.message = message;
-  }
-}
 
 export const errorHandler = (error: HttpException, req: Request, res: Response, next: NextFunction): void => {
   const status = error.status || 500;
