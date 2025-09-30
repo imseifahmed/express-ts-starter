@@ -1,6 +1,8 @@
 import User, { UserCreationAttributes } from '../models/user.model';
+import { Service } from 'typedi';
 import { createLogger } from '../utils/logger';
 
+@Service()
 export class UserService {
   private logger = createLogger(UserService.name);
 

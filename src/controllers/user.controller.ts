@@ -1,14 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from '../services/user.service';
-import asyncHandler from '../utils/asyncHandler';
+import { Container } from 'typedi';
+import { UserService } from '@/services/user.service';
+import asyncHandler from '@/utils/asyncHandler';
 import { HttpException } from '@/exceptions/HttpException';
 
 export class UserController {
-  private userService: UserService;
-
-  constructor() {
-    this.userService = new UserService();
-  }
+  private userService = Container.get(UserService);
 
   public getAllUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // Logic
