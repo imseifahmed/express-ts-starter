@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
+import compression from 'compression';
 import routes from './routes';
 import { errorHandler } from './middlewares/errorHandler';
 
@@ -19,6 +20,7 @@ class App {
     this.app.use(cors());
     this.app.use(hpp());
     this.app.use(helmet());
+    this.app.use(compression());
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
