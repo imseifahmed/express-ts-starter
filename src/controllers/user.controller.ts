@@ -7,7 +7,7 @@ import { HttpException } from '@/exceptions/HttpException';
 export class UserController {
   private userService = Container.get(UserService);
 
-  public getAllUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getUsers = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // Logic
   });
 
