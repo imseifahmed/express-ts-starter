@@ -1,63 +1,51 @@
-import User, { UserCreationAttributes } from '@/models/user.model';
+import User from '@/models/user.model';
 import { Service } from 'typedi';
+import { hash } from 'bcrypt';
 import { createLogger } from '@/utils/logger';
+import { HttpException } from '@/exceptions/HttpException';
+import { CreateUserDto } from '@/dtos/user.dto';
 
 @Service()
 export class UserService {
   private logger = createLogger(UserService.name);
 
-  public async getAllUsers(): Promise<User[]> {
-    try {
-      return await User.findAll();
-    } catch (error) {
-      this.logger.error('Error fetching all users', error as Error);
-      throw error;
-    }
+  public async getUsers(): Promise<User[]> {
+    const users: User[] = await User.findAll();
+    return users;
   }
 
-  public async getUserById(id: number): Promise<User | null> {
-    try {
-      return await User.findByPk(id);
-    } catch (error) {
-      this.logger.error(`Error fetching user with id ${id}`, error as Error);
-      throw error;
-    }
+  public async getUserById(id: number): Promise<User> {
+    const findUser = await User.findByPk(id);
+    if (!findUser) throw new HttpException(404, `User with id ${id} not found`);
+
+    return findUser;
   }
 
-  public async createUser(userData: UserCreationAttributes): Promise<User> {
-    try {
-      return await User.create(userData);
-    } catch (error) {
-      this.logger.error('Error creating user', error as Error);
-      throw error;
-    }
+  public async createUser(userData: CreateUserDto): Promise<User> {
+    const findUser: User = await User.findOne({ where: { email: userData.email } });
+    if (findUser) throw new HttpException(409, `Email ${userData.email} already exists`);
+
+    const hashedPassword = await hash(userData.password, 12);
+
+    const createUserData: User = await User.create({ ...userData, password: hashedPassword });
+    return createUserData;
   }
 
-  public async updateUser(id: number, userData: Partial<UserCreationAttributes>): Promise<User | null> {
-    try {
-      const user = await User.findByPk(id);
+  public async updateUser(id: number, userData: Partial<CreateUserDto>): Promise<User> {
+    const findUser: User = await User.findByPk(id);
+    if (!findUser) throw new HttpException(404, `User with id ${id} not found`);
 
-      if (!user) return null;
+    const hashedPassword = await hash(userData.password, 12);
 
-      await user.update(userData);
-      return user;
-    } catch (error) {
-      this.logger.error(`Error updating user with id ${id}`, error as Error);
-      throw error;
-    }
+    await findUser.update({ ...userData, password: hashedPassword });
+    return findUser;
   }
 
-  public async deleteUser(id: number): Promise<boolean> {
-    try {
-      const user = await User.findByPk(id);
+  public async deleteUser(id: number): Promise<User> {
+    const findUser: User = await User.findByPk(id);
+    if (!findUser) throw new HttpException(404, `User with id ${id} not found`);
 
-      if (!user) return false;
-
-      await user.destroy();
-      return true;
-    } catch (error) {
-      this.logger.error(`Error deleting user with id ${id}`, error as Error);
-      throw error;
-    }
+    await findUser.destroy();
+    return findUser;
   }
 }
