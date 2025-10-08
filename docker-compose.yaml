@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: dev
+      DB_USER: root
+      DB_PASSWORD: password
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: 'unless-stopped'
+    networks:
+      - backend
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dev
+    ports:
+      - '3306:3306'
+    volumes:
+      - data:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
